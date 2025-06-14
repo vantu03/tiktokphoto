@@ -28,10 +28,13 @@ class TikTokExtractor:
 
             match = re.search(r'/(video|photo)/(\d+)', final_url)
             if not match:
-                return result
+                return None
 
             media_type = match.group(1)
             media_id = match.group(2)
+
+            if media_type != 'photo':
+                return None
 
             # B2: Truy cập trang embed
             embed_url = f"https://www.tiktok.com/embed/v2/{media_id}"
@@ -59,6 +62,6 @@ class TikTokExtractor:
                 result["thumbnail"] = result["photos"][0]
             
         except Exception as e:
-            result["error"] = str(e)
+            return None
 
         return result
