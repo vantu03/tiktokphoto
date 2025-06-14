@@ -10,7 +10,7 @@ setup(
     ],
     author="vantu03",
     description="TikTok downloader library by VT",
-    long_description=open("README.md").read(),
+    long_description = open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/vantu03/tiktokphoto",
     classifiers=[
