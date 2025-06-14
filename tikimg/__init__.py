@@ -1,1 +1,1 @@
-from .core import TikTokPhoto
+from .tiktokphoto import TikTokPhoto

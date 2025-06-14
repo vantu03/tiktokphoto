@@ -1,101 +1,119 @@
-# TikTokPhoto
+# TikTokExtractor
 
-> A simple Python tool to extract photo mode image URLs from TikTok posts.
+TikTokExtractor là một thư viện Python đơn giản giúp trích xuất ảnh, âm thanh, tiêu đề, tác giả và ảnh đại diện từ các bài viết TikTok dạng video hoặc chế độ ảnh.
 
-**TikTokPhoto** is a lightweight Python class that extracts image links from TikTok photo posts by scraping the public embed page — no API keys or login required.
-
----
-
-## Features
-
-- Get all photo URLs from TikTok "photo mode"
-- Uses mobile headers (iPhone) for better TikTok compatibility
-- No TikTok API, cookies, or login needed
-- Fast and minimal
+Không cần đăng nhập, không dùng API, hoạt động bằng cách phân tích trang nhúng công khai của TikTok.
 
 ---
 
-## File Structure
+## Tính năng
+
+- Trích xuất URL ảnh từ bài viết TikTok ở chế độ ảnh (photo mode)
+- Lấy liên kết âm thanh (audio) nếu có
+- Lấy tiêu đề, tên người đăng và ảnh đại diện (thumbnail)
+- Không cần API, cookie hay đăng nhập
+
+---
+
+## Cấu trúc thư mục
 
 ```
 
-tiktokphoto/
-├── core.py          # Main logic containing TikTokPhoto class
-├── README.md        # Project readme
-└── ...
+tiktokextractor/
+├── core.py          # Chứa class TikTokExtractor
+├── README.md        # Tài liệu dự án
 
 ````
 
 ---
 
-## Quick Start
-
-### Install dependencies
+## Cài đặt
 
 ```bash
 pip install requests beautifulsoup4
 ````
 
-### Usage
+---
+
+## Sử dụng
 
 ```python
-from core import TikTokPhoto
+from core import TikTokExtractor
 
 url = 'https://www.tiktok.com/@tiktokphotomodejp/photo/7210615980077108481'
-extractor = TikTokPhoto(url)
-images = extractor.extract_info()
+extractor = TikTokExtractor(url)
+info = extractor.extract()
 
-for i, img in enumerate(images, 1):
-    print(f"Image {i}: {img}")
-```
+print("Tiêu đề:", info["title"])
+print("Tác giả:", info["author"])
+print("Thumbnail:", info["thumbnail"])
 
-### Sample Output
+print("Ảnh:")
+for photo in info["photos"]:
+    print(" -", photo)
 
-```
-Image 1: https://p16-sign-sg.tiktokcdn.com/tos-alisg-i-photomode-sg/xxx...
-Image 2: https://p16-sign-sg.tiktokcdn.com/tos-alisg-i-photomode-sg/yyy...
-...
+print("Âm thanh:")
+for audio in info["audios"]:
+    print(" -", audio)
 ```
 
 ---
 
-## How It Works
+## Ví dụ đầu ra
 
-1. Extracts TikTok ID from the given post URL.
-2. Requests TikTok's embed endpoint (e.g., `https://www.tiktok.com/embed/v2/{id}`).
-3. Parses image `<img>` tags with `alt="Image"` to extract valid URLs.
+```
+Tiêu đề: Mèo dễ thương trên TikTok
+Tác giả: tiktokphotomodejp
+Thumbnail: https://p16-sign-sg.tiktokcdn.com/...
+
+Ảnh:
+ - https://p16-sign-sg.tiktokcdn.com/...
+ - https://p16-sign-sg.tiktokcdn.com/...
+
+Âm thanh:
+ - https://sf16-ies-music.tiktokcdn.com/...
+```
 
 ---
 
-## Class Reference
+## Cách hoạt động
+
+1. Phân tích URL để lấy ID TikTok từ đường dẫn.
+2. Gửi yêu cầu đến trang nhúng công khai của TikTok (`/embed/v2/{id}`).
+3. Sử dụng BeautifulSoup để phân tích HTML, tìm ảnh, âm thanh và thông tin metadata.
+
+---
+
+## Tài liệu class
 
 ```python
-class TikTokPhoto:
-    def __init__(self, url: str, headers: dict = None, trys: int = 0):
-        # Initialize with TikTok URL
+class TikTokExtractor:
+    def __init__(self, url: str, headers: dict = None):
+        # Khởi tạo với URL TikTok
 
-    def extract_info(self, maxtrys: int = 3) -> list:
-        # Return list of image URLs
+    def extract(self) -> dict:
+        # Trả về dict gồm:
+        # {
+        #   "title": str | None,
+        #   "author": str | None,
+        #   "thumbnail": str | None,
+        #   "photos": List[str],
+        #   "audios": List[str]
+        # }
 ```
 
 ---
 
-## Requirements
+## Yêu cầu
 
-* Python 3.7+
+* Python 3.7 trở lên
 * `requests`
 * `beautifulsoup4`
 
 ---
 
-## License
+## Tác giả
 
-[MIT License](LICENSE)
+Tạo bởi [vantu03](https://github.com/vantu03)
 
----
-
-## Author
-
-Made by [vantu03](https://github.com/vantu03)
-
-> PRs and stars are welcome
+Bạn có thể đóng góp bằng cách mở pull request hoặc tạo issue.
