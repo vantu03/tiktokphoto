@@ -13,6 +13,7 @@ class TikTokExtractor:
 
     def extract(self):
         result = {
+            "id": None,
             "title": None,
             "author": None,
             "thumbnail": None,
@@ -32,7 +33,9 @@ class TikTokExtractor:
 
             media_type = match.group(1)
             media_id = match.group(2)
-
+            if media_id:
+                result["id"] = media_id
+                
             if media_type != 'photo':
                 return None
 
