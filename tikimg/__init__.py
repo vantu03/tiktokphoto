@@ -1,1 +1,1 @@
-from .tiktokphoto import TikTokPhoto
+from .tiktokphoto import TikTokExtractor
